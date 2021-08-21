@@ -2,6 +2,8 @@
 extern crate log;
 
 use wasm_bindgen::prelude::*;
+use bevy::app::App;
+use bevy::DefaultPlugins;
 
 // This is like the `main` function, except for JavaScript.
 #[wasm_bindgen(start)]
@@ -15,7 +17,16 @@ pub fn run() {
     #[cfg(feature = "panic_hook")]
     console_error_panic_hook::set_once();
 
+    // Everything's setup, let's goooooo!!!
+    info!("Hello Bevy!");
 
-    // Your code goes here!
-    info!("Hello World!");
+    // Initialize Bevy
+    let mut app = App::build();
+
+    app.add_plugins(DefaultPlugins);
+
+    #[cfg(target_arch = "wasm32")]
+    app.add_plugin(bevy_webgl2::WebGL2Plugin);
+
+    app.run();
 }
