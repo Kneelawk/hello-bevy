@@ -10,7 +10,12 @@ edition = "2018"
 resolver = "2"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
+path = "src/lib.rs"
+
+[[bin]]
+name = "hello-bevy"
+path = "src/main.rs"
 
 [profile.release]
 # This makes the compiled code faster and smaller, but it makes compiling slower,
@@ -20,6 +25,7 @@ lto = true
 [features]
 # If you uncomment this line, it will enable `wee_alloc`:
 #default = ["wee_alloc"]
+panic_hook = ["console_error_panic_hook"]
 
 [dependencies]
 # The `wasm-bindgen` crate provides the bare minimum functionality needed
@@ -31,18 +37,17 @@ wasm-bindgen = "0.2.45"
 # allocator, so it's not enabled by default.
 wee_alloc = { version = "0.4.2", optional = true }
 
+# The `console_error_panic_hook` crate provides better debugging of panics by
+# logging them with `console.error`. This is great for development, but requires
+# all the `std::fmt` and `std::panicking` infrastructure, so it's only enabled
+# in debug mode.
+console_error_panic_hook = { version = "0.1.5", optional = true }
+
 # The `web-sys` crate allows you to interact with the various browser APIs,
 # like the DOM.
 [dependencies.web-sys]
 version = "0.3.22"
 features = ["console"]
-
-# The `console_error_panic_hook` crate provides better debugging of panics by
-# logging them with `console.error`. This is great for development, but requires
-# all the `std::fmt` and `std::panicking` infrastructure, so it's only enabled
-# in debug mode.
-[target."cfg(debug_assertions)".dependencies]
-console_error_panic_hook = "0.1.5"
 
 # These crates are used for running unit tests.
 [dev-dependencies]
